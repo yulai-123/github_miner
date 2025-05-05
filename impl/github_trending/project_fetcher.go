@@ -10,8 +10,6 @@ import (
 
 type ProjectFetcher struct {
 	trendingClient *trending.Trending
-	period         string // 时间周期："daily", "weekly", "monthly"
-	language       string // 可选，按语言筛选
 	interval       time.Duration
 	callbackList   []model.CallbackFunc
 	readmeClient   *GitHubReadmeClient
@@ -20,14 +18,12 @@ type ProjectFetcher struct {
 }
 
 // 修改构造函数
-func NewProjectFetcher(period, language string, interval time.Duration,
+func NewProjectFetcher(interval time.Duration,
 	readmeClient *GitHubReadmeClient,
 	analyzerClient model.ReadmeAnalyzer,
 	storage model.ProjectStorage) *ProjectFetcher {
 	return &ProjectFetcher{
 		trendingClient: trending.NewTrending(),
-		period:         period,
-		language:       language,
 		interval:       interval,
 		readmeClient:   readmeClient,
 		analyzerClient: analyzerClient,
@@ -115,7 +111,7 @@ func (p *ProjectFetcher) fetchAndProcess() {
 }
 
 func (p *ProjectFetcher) fetchTrendingProjects() ([]model.MinedProject, error) {
-	projects, err := p.trendingClient.GetProjects(p.period, p.language)
+	projects, err := p.trendingClient.GetProjects("", "")
 	if err != nil {
 		return nil, err
 	}

@@ -27,8 +27,6 @@ func NewProjectMinerFactory(storagePath string) (*ProjectMinerFactory, error) {
 }
 
 func (f *ProjectMinerFactory) RegisterGitHubTrending(
-	period string,
-	language string,
 	interval time.Duration,
 	githubAPIKey string,
 	aiConfig model.OpenAIConfig,
@@ -38,7 +36,7 @@ func (f *ProjectMinerFactory) RegisterGitHubTrending(
 	aiAnalyzer := ai_analyzer.NewOpenAIAnalyzer(aiConfig)
 
 	// 传入storage
-	fetcher := github_trending.NewProjectFetcher(period, language, interval, readmeClient, aiAnalyzer, f.storage)
+	fetcher := github_trending.NewProjectFetcher(interval, readmeClient, aiAnalyzer, f.storage)
 
 	for _, callback := range callbacks {
 		fetcher.AddCallback(callback)
