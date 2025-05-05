@@ -103,8 +103,10 @@ func (p *ProjectFetcher) fetchAndProcess() {
 	// 执行回调
 	if len(processedProjects) > 0 {
 		for _, callback := range p.callbackList {
-			if err := callback(processedProjects); err != nil {
-				logrus.Errorf("执行回调失败: %v", err)
+			for _, project := range processedProjects {
+				if err := callback(project); err != nil {
+					logrus.Errorf("执行回调失败: %v", err)
+				}
 			}
 		}
 	}

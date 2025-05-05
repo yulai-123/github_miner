@@ -22,7 +22,7 @@ type ProjectFetcher interface {
 }
 
 // CallbackFunc 回调函数类型定义
-type CallbackFunc = func(projects []MinedProject) error
+type CallbackFunc = func(project MinedProject) error
 
 // ReadmeAnalyzer 分析README的接口
 type ReadmeAnalyzer interface {
