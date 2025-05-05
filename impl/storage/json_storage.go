@@ -45,12 +45,13 @@ func (s *JSONStorage) loadHistoricalData() error {
 	for _, file := range files {
 		// 从文件名中解析日期
 		baseName := filepath.Base(file)
-		dateStr := ""
-		_, err := fmt.Sscanf(baseName, "projects_%s.json", &dateStr)
+		var year, month, day int
+		_, err := fmt.Sscanf(baseName, "projects_%4d-%2d-%2d.json", &year, &month, &day)
 		if err != nil {
 			logrus.Warnf("无法从文件名解析日期: %s, %v", baseName, err)
 			continue
 		}
+		dateStr := fmt.Sprintf("%04d-%02d-%02d", year, month, day)
 
 		// 解析处理日期
 		processDate, err := time.Parse("2006-01-02", dateStr)

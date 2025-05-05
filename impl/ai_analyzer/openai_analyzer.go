@@ -26,7 +26,7 @@ func NewOpenAIAnalyzer(param model.OpenAIConfig) *OpenAIAnalyzer {
 func (o *OpenAIAnalyzer) Analyze(project *model.MinedProject) error {
 	ctx := context.Background()
 
-	prompt := fmt.Sprintf(`作为独立开发者的顾问，请分析以下GitHub项目README文件，并提供结构化的分析报告。
+	prompt := fmt.Sprintf(`你是一位技术分析师，请基于以下GitHub项目的README内容，提供简洁可靠的分析摘要。
 
 项目信息:
 - 名称: %s/%s
@@ -35,30 +35,24 @@ func (o *OpenAIAnalyzer) Analyze(project *model.MinedProject) error {
 - README内容:
 %s
 
-请提供以下格式的分析报告：
+请严格根据README中实际包含的信息，提供以下分析（如果某项信息README中没有明确提及，请标注"未提供"而不要猜测）：
 
-## 📌 项目概述
-[简明扼要地描述项目的核心目的和解决的问题]
+## 📝 项目概述
+[1-2段简洁描述，概括项目的主要目的和特点]
 
-## 💡 核心功能
-[以要点形式列出项目的主要功能]
+## 📋 核心功能
+[3-5点简明列表，说明这个项目解决什么问题/提供什么功能]
 
-## 🔧 技术实现
-[分析项目使用的技术栈、架构设计和关键实现方法]
+## ⚙️ 技术实现
+[简要说明项目的技术栈和关键实现方式，只列出README中明确提到的技术]
 
-## 🎯 适用场景
-[分析项目适合的使用场景和目标用户]
+## 💡 开发者价值
+[1-2段简洁描述，说明这个项目对独立开发者的参考价值]
 
-## 👨‍💻 开发者价值
-[从独立开发者角度，分析项目可能给你带来的启发、可复用的组件或解决方案]
+## 🚀 潜在机会
+[如果有的话，简述这个项目反映的市场需求或发展趋势]
 
-## 💼 市场洞察
-[项目可能反映的市场需求或发展趋势]
-
-## 🔍 亮点与特色
-[项目中值得关注的创新点或独特优势]
-
-请确保分析内容准确、有深度，并基于README内容给出有理有据的分析。内容应当精炼实用，避免冗余信息。`,
+请保持内容简洁、客观，每个部分不超过3-5行，只包含README中明确提供的信息。`,
 		project.Owner, project.Name, project.Description, project.Language, project.Readme)
 
 	resp, err := o.client.CreateChatCompletion(
