@@ -37,7 +37,7 @@ go get github.com/yulai-123/github_miner
 
 ## 运行效果
 
-![项目运行效果](./project_rest.jpg)
+![项目运行效果](https://github.com/yulai-123/github_miner/blob/main/project_result.jpg)
 
 ## 许可证
 
